@@ -26,10 +26,14 @@ gcc -O3 kmsview.c -o kmsview -lSDL2
 You can feed raw BGRA video frames directly into the binary using a standard Linux pipe. Make sure to specify your target display resolution.
 
 Under the old stack using fb0: as an output:
+```bash
   ffmpeg -i your_video.mp4 -vf "scale=480:1280,fade=t=out:st=5.5" -pix_fmt bgra -f fbdev /dev/fb0
+```
 
 Using kmsview:
+```bash
   ffmpeg -i your_video.mp4 -vf "scale=480:1280,fade=t=out:st=5.5" -pix_fmt bgra -f rawvideo pipe:1 | SDL_VIDEODRIVER=kmsdrm SDL_AUDIODRIVER=dummy ./kmsview --width 480 --height 1280
+```
 
 ⚠️ Path Note: When running the command above, make sure the compiled `kmsview` binary is in the **same folder** as your video file. If it is located somewhere else, you must use the absolute path to the compiled kmsview file so FFmpeg can find it.
 
